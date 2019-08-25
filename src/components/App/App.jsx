@@ -7,6 +7,7 @@ import theme from "./../../theme";
 import AppHeader from "./AppHeader";
 import Auth from "../Auth";
 import News from '../News';
+import Chat from '../Chat';
 const styles = () => ({
   root: {
     display: "flex",
@@ -18,8 +19,19 @@ const styles = () => ({
     flex: "1 1 100%",
     display: "flex",
     flexDirection: "column"
+  },
+  mainLayoutWrapper: {
+    background: 'url("/assets/img/another-background.png") no-repeat',
+    backgroundPosition: "center center",
+    backgroundSize: "cover",
+    width: "100%",
+    flex: "1 1 100%",
+    display: 'flex',
+    alignItems: 'stretch'
   }
 });
+
+const MainLayout = withStyles(styles)(({ children, classes }) => <div className={classes.mainLayoutWrapper}>{children}</div>)
 
 function App({ classes }) {
   return (
@@ -31,7 +43,9 @@ function App({ classes }) {
           <Box className={classes.container}>
               <Switch>
                 <Route path="/" exact component={Auth} />
-                <Route path="/news" component={News}/>
+                <Route path="/registration" component={Auth} />
+                <Route path="/news" component={() => <MainLayout><News/></MainLayout>}/>
+                <Route path="/chat" component={() => <MainLayout><Chat/></MainLayout>}/>
               </Switch>
           </Box>
         </div>
