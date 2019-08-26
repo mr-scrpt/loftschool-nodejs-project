@@ -8,12 +8,14 @@ import AppHeader from "./AppHeader";
 import Auth from "../Auth";
 import News from '../News';
 import Chat from '../Chat';
+import Profile from "../Profile";
 const styles = () => ({
   root: {
     display: "flex",
     flexDirection: "column",
     height: "100%",
-    minHeight: "100vh"
+    minHeight: "100vh",
+    backgroundColor: '#f5f5f5'
   },
   container: {
     flex: "1 1 100%",
@@ -46,6 +48,7 @@ function App({ classes }) {
                 <Route path="/registration" component={Auth} />
                 <Route path="/news" component={() => <MainLayout><News/></MainLayout>}/>
                 <Route path="/chat" component={() => <MainLayout><Chat/></MainLayout>}/>
+                <Route path="/profile" component={() => <MainLayout><Profile/></MainLayout>}/>
               </Switch>
           </Box>
         </div>

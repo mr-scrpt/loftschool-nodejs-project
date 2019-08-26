@@ -12,7 +12,7 @@ import {
   Https
 } from '@material-ui/icons'
 import { withStyles } from "@material-ui/core/styles";
-
+import classNames from 'classnames'
 const styles = theme => ({
   textField: {
     display: 200,
@@ -20,7 +20,7 @@ const styles = theme => ({
   }
 });
 
-const PasswordInput = withStyles(styles)(({ classes, handleChange, value, label }) => {
+const PasswordInput = withStyles(styles)(({ classes, handleChange, value, label, className }) => {
   const [values, setValues] = React.useState({
     showPassword: false
   });
@@ -33,7 +33,7 @@ const PasswordInput = withStyles(styles)(({ classes, handleChange, value, label 
   };
 
   return (
-    <FormControl className={classes.textField} required>
+    <FormControl className={classNames(classes.textField, className)} required>
       <InputLabel htmlFor="adornment-password">{label}</InputLabel>
       <Input
         id="adornment-password"

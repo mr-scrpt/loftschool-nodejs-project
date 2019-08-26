@@ -25,7 +25,7 @@ class AppHeader extends PureComponent {
               <Button color={location.pathname === '/news' ? 'primary' : 'default'} component={AdapterLink} to="/news">Новости</Button>
               <Button color={location.pathname === '/chat' ? 'primary' : 'default'} component={AdapterLink} to="/chat">Чат</Button>
               <Button>Настройки</Button>
-              <Button>Профиль</Button>
+              <Button color={location.pathname === '/profile' ? 'primary' : 'default'} component={AdapterLink} to="/profile">Профиль</Button>
             </Toolbar>
           </Container>
         </AppBar>
