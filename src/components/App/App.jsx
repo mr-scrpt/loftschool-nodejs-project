@@ -6,8 +6,8 @@ import { withStyles } from "@material-ui/core/styles";
 import theme from "./../../theme";
 import AppHeader from "./AppHeader";
 import Auth from "../Auth";
-import News from '../News';
-import Chat from '../Chat';
+import News from "../News";
+import Chat from "../Chat";
 import Profile from "../Profile";
 const styles = () => ({
   root: {
@@ -15,7 +15,7 @@ const styles = () => ({
     flexDirection: "column",
     height: "100%",
     minHeight: "100vh",
-    backgroundColor: '#f5f5f5'
+    backgroundColor: "#f5f5f5"
   },
   container: {
     flex: "1 1 100%",
@@ -28,12 +28,20 @@ const styles = () => ({
     backgroundSize: "cover",
     width: "100%",
     flex: "1 1 100%",
-    display: 'flex',
-    alignItems: 'stretch'
+    display: "flex",
+    alignItems: "stretch"
   }
 });
 
-const MainLayout = withStyles(styles)(({ children, classes }) => <div className={classes.mainLayoutWrapper}>{children}</div>)
+const MainLayout = withStyles(styles)(({ children, classes }) => (
+  <div className={classes.mainLayoutWrapper}>{children}</div>
+));
+
+const withLayout = Component => props => (
+  <MainLayout>
+    <Component {...props} />
+  </MainLayout>
+);
 
 function App({ classes }) {
   return (
@@ -43,13 +51,13 @@ function App({ classes }) {
         <div className={classes.root}>
           <AppHeader />
           <Box className={classes.container}>
-              <Switch>
-                <Route path="/" exact component={Auth} />
-                <Route path="/registration" component={Auth} />
-                <Route path="/news" component={() => <MainLayout><News/></MainLayout>}/>
-                <Route path="/chat" component={() => <MainLayout><Chat/></MainLayout>}/>
-                <Route path="/profile" component={() => <MainLayout><Profile/></MainLayout>}/>
-              </Switch>
+            <Switch>
+              <Route path="/" exact component={Auth} />
+              <Route path="/registration" component={Auth} />
+              <Route path="/news" component={withLayout(News)} />
+              <Route path="/chat" component={withLayout(Chat)} />
+              <Route path="/profile" component={withLayout(Profile)} />
+            </Switch>
           </Box>
         </div>
       </BrowserRouter>
