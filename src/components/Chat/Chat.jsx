@@ -10,7 +10,10 @@ import {
   CardContent,
   CardActions,
   TextField,
-  Button
+  Button,
+  Typography,
+  CardHeader,
+  Divider
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import classNames from "classnames";
@@ -52,6 +55,8 @@ const styles = theme => ({
 
 const ChannelsList = withStyles(styles)(({ classes }) => (
   <Paper className={classes.column} square>
+    <CardHeader title={<Typography variant="h5">Личные чаты</Typography>} />
+    <Divider/>
     <List>
       {["User 1", "User 2", "User 3", "User 4"].map((text, index) => (
         <ListItem button key={text} selected={index === 1}>
@@ -140,7 +145,7 @@ class Chat extends PureComponent {
             </Grid>
             <Grid item xs={8}>
               <Card className={classes.column} square>
-                <ActiveChannelArea/>
+                <ActiveChannelArea />
               </Card>
             </Grid>
           </Grid>
