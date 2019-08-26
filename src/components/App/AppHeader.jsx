@@ -36,7 +36,7 @@ class AppHeader extends PureComponent {
               <ButtonLink path="/news">Новости</ButtonLink>
               <ButtonLink path="/chat">Чат</ButtonLink>
               <ButtonLink path="/profile">Профиль</ButtonLink>
-              <Button>Настройки</Button>
+              <ButtonLink path="/admin_panel">Админка</ButtonLink>
               <Button variant="contained" color="primary">Выйти</Button>
             </Toolbar>
           </Container>

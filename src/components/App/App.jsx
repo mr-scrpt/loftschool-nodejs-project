@@ -9,6 +9,7 @@ import Auth from "../Auth";
 import News from "../News";
 import Chat from "../Chat";
 import Profile from "../Profile";
+import AdminPanel from "../AdminPanel";
 const styles = () => ({
   root: {
     display: "flex",
@@ -57,6 +58,7 @@ function App({ classes }) {
               <Route path="/news" component={withLayout(News)} />
               <Route path="/chat" component={withLayout(Chat)} />
               <Route path="/profile" component={withLayout(Profile)} />
+              <Route path="/admin_panel" component={withLayout(AdminPanel)} />
             </Switch>
           </Box>
         </div>
