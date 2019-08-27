@@ -1,11 +1,13 @@
-import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { CssBaseline, Box } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/styles';
+import React, { PureComponent } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import PrivateRoute from '../common/PrivateRoute';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { getUserProfileFromToken } from '../../store/auth';
+
 import { withStyles } from '@material-ui/core/styles';
-import theme from './../../theme';
-import createAppStore from '../../store';
+
+import Box from '@material-ui/core/Box';
 import AppHeader from './AppHeader';
 import Auth from '../Auth';
 import News from '../News';
@@ -13,6 +15,8 @@ import Chat from '../Chat';
 import Profile from '../Profile';
 import AdminPanel from '../AdminPanel';
 import withNotifications from '../common/withNotificationsHOC';
+
+
 const styles = () => ({
   root: {
     display: 'flex',
@@ -50,44 +54,43 @@ const withLayout = Component => props => (
 const withLayoutAndNotifications = Component =>
   withNotifications(withLayout(Component));
 
-function App({ classes }) {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Provider store={createAppStore()}>
-        <BrowserRouter>
-          <div className={classes.root}>
-            <AppHeader />
-            <Box className={classes.container}>
-              <Switch>
-                <Route path="/" exact component={withNotifications(Auth)} />
-                <Route
-                  path="/registration"
-                  component={withNotifications(Auth)}
-                />
-                <Route
-                  path="/news"
-                  component={withLayoutAndNotifications(News)}
-                />
-                <Route
-                  path="/chat"
-                  component={withLayoutAndNotifications(Chat)}
-                />
-                <Route
-                  path="/profile"
-                  component={withLayoutAndNotifications(Profile)}
-                />
-                <Route
-                  path="/admin_panel"
-                  component={withLayoutAndNotifications(AdminPanel)}
-                />
-              </Switch>
-            </Box>
-          </div>
-        </BrowserRouter>
-      </Provider>
-    </ThemeProvider>
-  );
+class App extends PureComponent {
+  componentDidMount() {
+    this.props.dispatch(getUserProfileFromToken());
+  }
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <AppHeader />
+        <Box className={classes.container}>
+          <Switch>
+            <Route path="/" exact component={withNotifications(Auth)} />
+            <Route path="/registration" component={withNotifications(Auth)} />
+            <PrivateRoute
+              path="/news"
+              component={withLayoutAndNotifications(News)}
+            />
+            <PrivateRoute
+              path="/chat"
+              component={withLayoutAndNotifications(Chat)}
+            />
+            <PrivateRoute
+              path="/profile"
+              component={withLayoutAndNotifications(Profile)}
+            />
+            <PrivateRoute
+              path="/admin_panel"
+              component={withLayoutAndNotifications(AdminPanel)}
+            />
+          </Switch>
+        </Box>
+      </div>
+    );
+  }
 }
 
-export default withStyles(styles)(App);
+export default compose(
+  withStyles(styles),
+  connect()
+)(App);

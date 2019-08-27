@@ -83,6 +83,7 @@ export const loginUser = ({ username, password }) => dispatch =>
         dispatch(
           openNotification({ text: 'Вы успешно вошли!', variant: 'success' })
         );
+        localStorage.setItem('access_token', response.data['access_token'])
         dispatch(setProfileData(response.data));
         resolve(data);
       })
@@ -133,3 +134,23 @@ export const registerUser = ({
         reject(error);
       });
   });
+
+export const getUserProfileFromToken = () => dispatch => {
+  const token = localStorage.getItem('access_token')
+  axios.get('http://localhost:3000/api/profile', { headers: { token }})
+  .then(response => {
+    dispatch(setProfileData({ ...response.data, access_token: token }));
+  })
+  .catch(error => {
+
+  })
+}
+
+export const logout = () => dispatch => {
+  localStorage.removeItem('access_token')
+  dispatch(logoutUser())
+  openNotification({
+    text: 'Вы вышли из системы',
+    variant: 'info'
+  })
+}

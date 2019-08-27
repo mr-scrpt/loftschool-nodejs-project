@@ -1,7 +1,14 @@
 import React, { PureComponent } from 'react';
-import { AppBar, Toolbar, Button, Container } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { AppBar, Toolbar, Container } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import ButtonLink from '../common/ButtonLink';
+import {
+  userPermissionsSelector,
+  isAuthorizedSelector
+} from '../../store/auth';
+
 const styles = () => ({
   logo: {
     flexGrow: 1
@@ -9,8 +16,34 @@ const styles = () => ({
 });
 
 class AppHeader extends PureComponent {
+  renderAuthorizedNav() {
+    const { permissions } = this.props;
+    return (
+      <>
+        {permissions.news.R && (
+          <ButtonLink path="/news" isRouterLink>
+            Новости
+          </ButtonLink>
+        )}
+        {permissions.chat.R && (
+          <ButtonLink path="/chat" isRouterLink>
+            Чат
+          </ButtonLink>
+        )}
+
+        {permissions.settings.R && (
+          <ButtonLink path="/admin_panel" isRouterLink>
+            Админка
+          </ButtonLink>
+        )}
+        <ButtonLink path="/profile" isRouterLink>
+          Профиль
+        </ButtonLink>
+      </>
+    );
+  }
   render() {
-    const { classes } = this.props;
+    const { classes, isAuthorized } = this.props;
     return (
       <div>
         <AppBar position="static" color="default" className={classes.appBar}>
@@ -22,21 +55,7 @@ class AppHeader extends PureComponent {
               <ButtonLink path="/" isRouterLink>
                 Главная
               </ButtonLink>
-              <ButtonLink path="/news" isRouterLink>
-                Новости
-              </ButtonLink>
-              <ButtonLink path="/chat" isRouterLink>
-                Чат
-              </ButtonLink>
-              <ButtonLink path="/profile" isRouterLink>
-                Профиль
-              </ButtonLink>
-              <ButtonLink path="/admin_panel" isRouterLink>
-                Админка
-              </ButtonLink>
-              <Button variant="contained" color="primary">
-                Выйти
-              </Button>
+              {isAuthorized ? this.renderAuthorizedNav() : null}
             </Toolbar>
           </Container>
         </AppBar>
@@ -45,4 +64,11 @@ class AppHeader extends PureComponent {
   }
 }
 
-export default withStyles(styles)(AppHeader);
+const mapStateToProps = state => ({
+  isAuthorized: isAuthorizedSelector(state),
+  permissions: userPermissionsSelector(state)
+});
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps)
+)(AppHeader);
