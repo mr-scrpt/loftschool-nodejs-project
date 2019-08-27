@@ -1,14 +1,12 @@
-import React from "react";
+import React from 'react';
 import {
   FormControl,
   Input,
   InputLabel,
   InputAdornment
-} from "@material-ui/core";
-import {
-    Person
-} from '@material-ui/icons'
-import { withStyles } from "@material-ui/core/styles";
+} from '@material-ui/core';
+import { Person } from '@material-ui/icons';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   textField: {
@@ -17,23 +15,26 @@ const styles = theme => ({
   }
 });
 
-const AuthFormInput = withStyles(styles)(({ classes, handleChange, value, label, required}) => {
+const AuthFormInput = withStyles(styles)(
+  ({ id, classes, handleChange, value, label, required }) => {
     return (
       <FormControl className={classes.textField} required={required}>
-        <InputLabel htmlFor="username">{label}</InputLabel>
+        <InputLabel htmlFor={'input-' + id}>{label}</InputLabel>
         <Input
-          id="username"
+          id={'input-' + id}
           type="text"
           value={value}
+          autoComplete={id}
           onChange={handleChange}
           startAdornment={
             <InputAdornment position="start">
-             <Person />
+              <Person />
             </InputAdornment>
           }
         />
       </FormControl>
-    )
-  })
+    );
+  }
+);
 
 export default AuthFormInput;

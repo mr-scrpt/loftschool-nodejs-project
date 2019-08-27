@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 import {
   Container,
   Typography,
@@ -8,32 +8,32 @@ import {
   Button,
   TextField,
   CardActions
-} from "@material-ui/core";
-import AspectRatio from "react-aspect-ratio";
-import PasswordInput from '../common/PasswordInput'
-import { withStyles } from "@material-ui/styles";
+} from '@material-ui/core';
+import AspectRatio from 'react-aspect-ratio';
+import PasswordInput from '../common/PasswordInput';
+import { withStyles } from '@material-ui/styles';
 
 const styles = theme => ({
   wrapper: {
-    width: "100%",
-    flex: "1 1 100%",
-    paddingTop: "40px"
+    width: '100%',
+    flex: '1 1 100%',
+    paddingTop: '40px'
   },
   formCard: {
     padding: theme.spacing(2)
   },
   avatarPreview: {
-    width: "100%",
-    height: "100%",
-    borderRadius: "8px"
+    width: '100%',
+    height: '100%',
+    borderRadius: '8px'
   },
   avatarPreviewWrapper: {
     marginBottom: theme.spacing(2),
-    width: "100%"
+    width: '100%'
   },
   uploadButton: {
-    display: "block",
-    textAlign: "center"
+    display: 'block',
+    textAlign: 'center'
   },
   form: {
     display: 'flex',
@@ -43,7 +43,7 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200,
+    width: 200
   },
   formActions: {
     marginTop: 'auto',
@@ -73,7 +73,7 @@ class Profile extends PureComponent {
                   color="primary"
                 >
                   Загрузить файл
-                  <input type="file" style={{ display: "none" }} />
+                  <input type="file" style={{ display: 'none' }} />
                 </Button>
               </Grid>
               <Grid item xs={8}>
@@ -122,7 +122,9 @@ class Profile extends PureComponent {
                     />
                   </div>
                   <CardActions className={classes.formActions}>
-                    <Button color="primary" variant="contained">Сохранить</Button>
+                    <Button color="primary" variant="contained">
+                      Сохранить
+                    </Button>
                     <Button variant="outlined">Сбросить</Button>
                   </CardActions>
                 </Grid>

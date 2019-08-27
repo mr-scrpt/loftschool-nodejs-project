@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import {
   Typography,
@@ -8,15 +8,15 @@ import {
   Avatar,
   CardActions,
   Button
-} from "@material-ui/core";
-import { withStyles } from "@material-ui/styles";
-import ButtonLink from "../common/ButtonLink";
+} from '@material-ui/core';
+import { withStyles } from '@material-ui/styles';
+import ButtonLink from '../common/ButtonLink';
 
 const styles = theme => ({
   wrapper: {
-    width: "100%",
-    flex: "1 1 100%",
-    paddingTop: "40px"
+    width: '100%',
+    flex: '1 1 100%',
+    paddingTop: '40px'
   },
   card: {
     marginBottom: theme.spacing(2)
@@ -30,7 +30,7 @@ const NewsCard = withStyles(styles)(({ classes, post }) => {
         avatar={
           <Avatar
             aria-label="recipe"
-            src={post.user.image || "/assets/img/no-user-image.png"}
+            src={post.user.image || '/assets/img/no-user-image.png'}
             alt={post.user.username}
           ></Avatar>
         }
@@ -54,29 +54,31 @@ const NewsList = () => {
   const news = [
     {
       id: 1,
-      title: "Новость 1",
-      text: "Всем привет! Эта новая новость!",
-      created_at: "2018-06-29T19:00:04.645Z",
-      user: { id: 1, username: "ascold2019", image: null }
+      title: 'Новость 1',
+      text: 'Всем привет! Эта новая новость!',
+      created_at: '2018-06-29T19:00:04.645Z',
+      user: { id: 1, username: 'ascold2019', image: null }
     },
     {
       id: 2,
-      title: "Новость 2",
-      text: "Всем привет! Эта новая новость!",
-      created_at: "2018-06-29T19:00:04.645Z",
-      user: { id: 1, username: "ascold2019", image: null }
+      title: 'Новость 2',
+      text: 'Всем привет! Эта новая новость!',
+      created_at: '2018-06-29T19:00:04.645Z',
+      user: { id: 1, username: 'ascold2019', image: null }
     },
     {
       id: 3,
-      title: "Новость 3",
-      text: "Всем привет! Эта новая новость!",
-      created_at: "2018-06-29T19:00:04.645Z",
-      user: { id: 1, username: "ascold2019", image: null }
+      title: 'Новость 3',
+      text: 'Всем привет! Эта новая новость!',
+      created_at: '2018-06-29T19:00:04.645Z',
+      user: { id: 1, username: 'ascold2019', image: null }
     }
   ];
   return (
     <>
-     <ButtonLink color="primary" path="/news/add">Добавить</ButtonLink>
+      <ButtonLink color="primary" path="/news/add">
+        Добавить
+      </ButtonLink>
       <div>
         {news.map(post => (
           <NewsCard post={post} key={post.id} />

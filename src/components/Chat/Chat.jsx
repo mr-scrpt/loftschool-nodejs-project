@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 import {
   Grid,
   Paper,
@@ -14,20 +14,20 @@ import {
   Typography,
   CardHeader,
   Divider
-} from "@material-ui/core";
-import { withStyles } from "@material-ui/styles";
-import classNames from "classnames";
+} from '@material-ui/core';
+import { withStyles } from '@material-ui/styles';
+import classNames from 'classnames';
 const styles = theme => ({
   toolbar: theme.mixins.toolbar,
   column: {
     // backgroundColor: '#494949',
-    height: "calc(100vh - 80px)",
-    display: "flex",
-    flexDirection: "column"
+    height: 'calc(100vh - 80px)',
+    display: 'flex',
+    flexDirection: 'column'
   },
   wrapper: {
-    width: "100%",
-    flex: "1 1 100%",
+    width: '100%',
+    flex: '1 1 100%',
     paddingTop: theme.spacing(1)
   },
   messageContainer: {
@@ -43,22 +43,22 @@ const styles = theme => ({
     backgroundColor: theme.palette.secondary.main
   },
   isMyMessage: {
-    alignSelf: "end"
+    alignSelf: 'end'
   },
   isAnotherMessage: {
-    alignSelf: "flex-end"
+    alignSelf: 'flex-end'
   },
   chatArea: {
-    overflowY: "scroll"
+    overflowY: 'scroll'
   }
 });
 
 const ChannelsList = withStyles(styles)(({ classes }) => (
   <Paper className={classes.column} square>
     <CardHeader title={<Typography variant="h5">Личные чаты</Typography>} />
-    <Divider/>
+    <Divider />
     <List>
-      {["User 1", "User 2", "User 3", "User 4"].map((text, index) => (
+      {['User 1', 'User 2', 'User 3', 'User 4'].map((text, index) => (
         <ListItem button key={text} selected={index === 1}>
           <ListItemText primary={text} />
         </ListItem>

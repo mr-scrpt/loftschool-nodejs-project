@@ -1,23 +1,15 @@
-import React, { PureComponent } from "react";
-import { withStyles } from "@material-ui/styles";
-import {
-  Container,
-  Typography,
-  Paper,
-  Grid,
-  TextField,
-  ButtonGroup,
-  Button
-} from "@material-ui/core";
-import ButtonLink from "../common/ButtonLink";
+import React, { PureComponent } from 'react';
+import { withStyles } from '@material-ui/styles';
+import { Paper, Grid, TextField, ButtonGroup, Button } from '@material-ui/core';
+import ButtonLink from '../common/ButtonLink';
 
 const styles = theme => ({
   formCard: {
     padding: theme.spacing(2)
   },
   textField: {
-    display: "block",
-    width: "100%"
+    display: 'block',
+    width: '100%'
   }
 });
 
@@ -42,7 +34,7 @@ class NewsAdd extends PureComponent {
               margin="normal"
               disabled
               fullWidth
-              value={"26.08.2019 15:08"}
+              value={'26.08.2019 15:08'}
             />
             <TextField
               label="Заголовок"
@@ -64,7 +56,9 @@ class NewsAdd extends PureComponent {
               <Button variant="contained" color="secondary">
                 Сохранить
               </Button>
-              <ButtonLink path="/news" variant="contained">Отменить</ButtonLink>
+              <ButtonLink path="/news" variant="contained">
+                Отменить
+              </ButtonLink>
             </ButtonGroup>
           </Grid>
         </Grid>
