@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { compose } from 'recompose';
 import { registerUser } from '../../store/auth';
-
+import routes from '../../constants/routes'
 const styles = () => ({
   form: {
     display: 'flex',
@@ -39,7 +39,7 @@ const RegistrationForm = ({ classes, dispatch, history }) => {
     dispatch(
       registerUser({ username, password, firstname, lastname, patronicname })
     )
-      .then(() => history.push('/'))
+      .then(() => history.push(routes.home))
       .catch(console.error);
   };
   return (
@@ -87,7 +87,7 @@ const RegistrationForm = ({ classes, dispatch, history }) => {
         </Button>
       </Paper>
       <Typography className={classNames(classes.textCenter, classes.form)}>
-        Уже зарегистрированы? <Link to="/">Войти</Link>
+        Уже зарегистрированы? <Link to={routes.home}>Войти</Link>
       </Typography>
     </>
   );

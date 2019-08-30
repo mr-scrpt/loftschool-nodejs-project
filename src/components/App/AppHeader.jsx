@@ -4,10 +4,12 @@ import { compose } from 'recompose';
 import { AppBar, Toolbar, Container } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import ButtonLink from '../common/ButtonLink';
+import routes from '../../constants/routes'
 import {
   userPermissionsSelector,
   isAuthorizedSelector
 } from '../../store/auth';
+import _get from 'lodash.get'
 
 const styles = () => ({
   logo: {
@@ -20,23 +22,23 @@ class AppHeader extends PureComponent {
     const { permissions } = this.props;
     return (
       <>
-        {permissions.news.R && (
-          <ButtonLink path="/news" isRouterLink>
+        {_get(permissions, 'news.R', false) && (
+          <ButtonLink path={routes.news} isRouterLink>
             Новости
           </ButtonLink>
         )}
-        {permissions.chat.R && (
-          <ButtonLink path="/chat" isRouterLink>
+        {_get(permissions, 'chat.R', false) && (
+          <ButtonLink path={routes.chat} isRouterLink>
             Чат
           </ButtonLink>
         )}
 
-        {permissions.settings.R && (
-          <ButtonLink path="/admin_panel" isRouterLink>
+        {_get(permissions, 'settings.R', false) && (
+          <ButtonLink path={routes.adminPanel} isRouterLink>
             Админка
           </ButtonLink>
         )}
-        <ButtonLink path="/profile" isRouterLink>
+        <ButtonLink path={routes.profile} isRouterLink>
           Профиль
         </ButtonLink>
       </>
@@ -52,7 +54,7 @@ class AppHeader extends PureComponent {
               <div className={classes.logo}>
                 <img src="../../assets/img/logo.png" alt="logo" />
               </div>
-              <ButtonLink path="/" isRouterLink>
+              <ButtonLink path={routes.home} isRouterLink>
                 Главная
               </ButtonLink>
               {isAuthorized ? this.renderAuthorizedNav() : null}

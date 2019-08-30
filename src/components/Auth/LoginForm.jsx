@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { compose } from 'recompose';
 import { loginUser } from '../../store/auth';
+import routes from '../../constants/routes';
 
 const styles = () => ({
   form: {
@@ -55,7 +56,7 @@ const LoginForm = ({ classes, dispatch }) => {
         </Button>
       </Paper>
       <Typography className={classNames(classes.textCenter, classes.form)}>
-        Впервые на сайте? <Link to="/registration">Регистрация</Link>
+        Впервые на сайте? <Link to={routes.registration}>Регистрация</Link>
       </Typography>
     </>
   );

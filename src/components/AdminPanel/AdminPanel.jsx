@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
 import {
   Container,
-  Typography,
   Avatar,
   Grid,
   Paper,
@@ -10,12 +9,10 @@ import {
   Select,
   FormControl,
   MenuItem,
-  InputLabel,
-  FormGroup,
-  FormControlLabel,
-  Checkbox
+  InputLabel
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import SettingsFormGroup from './AdminPanelSettingsFormGroup'
 
 const styles = theme => ({
   wrapper: {
@@ -36,56 +33,6 @@ const styles = theme => ({
     marginBottom: theme.spacing(3)
   }
 });
-
-const SettingsFormGroup = ({ handleChange, values, label }) => (
-  <>
-    <Typography variant="h5" component="h3" gutterBottom>
-      {label}
-    </Typography>
-    <FormGroup>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={values.C}
-            value="create"
-            onChange={handleChange("C")}
-          />
-        }
-        label="Создание"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={values.R}
-            value="read"
-            onChange={handleChange("R")}
-          />
-        }
-        label="Чтение"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={values.U}
-            value="update"
-            onChange={handleChange("U")}
-          />
-        }
-        label="Редактирование"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={values.D}
-            value="delete"
-            onChange={handleChange("D")}
-          />
-        }
-        label="Удаление"
-      />
-    </FormGroup>
-  </>
-);
 
 class AdminPanel extends PureComponent {
   state = {

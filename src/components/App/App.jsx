@@ -4,7 +4,7 @@ import PrivateRoute from '../common/PrivateRoute';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { getUserProfileFromToken } from '../../store/auth';
-
+import routes from '../../constants/routes'
 import { withStyles } from '@material-ui/core/styles';
 
 import Box from '@material-ui/core/Box';
@@ -65,22 +65,25 @@ class App extends PureComponent {
         <AppHeader />
         <Box className={classes.container}>
           <Switch>
-            <Route path="/" exact component={withNotifications(Auth)} />
-            <Route path="/registration" component={withNotifications(Auth)} />
+            <Route path={routes.home} exact component={withNotifications(Auth)} />
+            <Route path={routes.registration} component={withNotifications(Auth)} />
             <PrivateRoute
-              path="/news"
+              permissionPath="news"
+              path={routes.news}
               component={withLayoutAndNotifications(News)}
             />
             <PrivateRoute
-              path="/chat"
+              permissionPath="chat"
+              path={routes.chat}
               component={withLayoutAndNotifications(Chat)}
             />
             <PrivateRoute
-              path="/profile"
+              path={routes.profile}
               component={withLayoutAndNotifications(Profile)}
             />
             <PrivateRoute
-              path="/admin_panel"
+              permissionPath="settings"
+              path={routes.adminPanel}
               component={withLayoutAndNotifications(AdminPanel)}
             />
           </Switch>

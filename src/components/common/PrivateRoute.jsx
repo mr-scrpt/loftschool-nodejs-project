@@ -6,6 +6,7 @@ import {
   userPermissionsSelector,
   isAuthorizedSelector
 } from '../../store/auth';
+import routes from '../../constants/routes';
 const PrivateRoute = ({
   permissionPath,
   path,
@@ -13,8 +14,8 @@ const PrivateRoute = ({
   permissions,
   isAuthorized
 }) => {
-  if (!isAuthorized || !_.get(permissions, [permissionPath, 'R'], false))
-    return <Redirect from={path} to="/" />;
+  if (!isAuthorized || (permissionPath && !_.get(permissions, [permissionPath, 'R'], false)))
+    return <Redirect from={path} to={routes.home} />;
 
   return <Route path={path} component={component} />;
 };
