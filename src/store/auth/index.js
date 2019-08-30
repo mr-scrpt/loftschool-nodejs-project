@@ -1,21 +1,23 @@
 import { createActions, handleActions } from 'redux-actions';
 import { combineReducers } from 'redux';
-import axios from 'axios';
+import request from '../../helpers/request';
 import { openNotification } from '../notifications';
 export const userProfileSelector = state => state.auth.userProfile;
 export const userPermissionsSelector = state => state.auth.permissions;
-export const accessTokenSelector = state => state.auth.accessToken;
-export const isAuthorizedSelector = state => !!state.auth.accessToken;
+export const tokensSelector = state => state.auth.tokens;
+export const isAuthorizedSelector = state => !!state.auth.tokens.accessToken;
 export const {
   loginUserRequest,
   registrationUserRequest,
   setProfileData,
+  setTokenData,
   logoutUser
 } = createActions(
   {
     LOGIN_USER_REQUEST: n => n,
     REGISTRATION_USER_REQUEST: n => n,
     SET_PROFILE_DATA: n => n,
+    SET_TOKEN_DATA: n => n,
     LOGOUT_USER: n => n
   },
   { prefix: 'AUTH' }
@@ -54,43 +56,85 @@ const permissions = handleActions(
   defaultPermissions
 );
 
-const accessToken = handleActions(
+const tokens = handleActions(
   {
-    [setProfileData]: (state, action) => {
-      const { access_token } = action.payload;
-      return access_token;
+    [setTokenData]: (state, action) => {
+      const {
+        accessToken,
+        accessTokenExpiredAt,
+        refreshToken,
+        refreshTokenExpiredAt
+      } = action.payload;
+      return {
+        accessToken,
+        accessTokenExpiredAt,
+        refreshToken,
+        refreshTokenExpiredAt
+      };
     },
-    [logoutUser]: () => null
+    [logoutUser]: () => ({
+      accessToken: null,
+      accessTokenExpiredAt: null,
+      refreshToken: null,
+      refreshTokenExpiredAt: null
+    })
   },
-  null
+  {
+    accessToken: null,
+    accessTokenExpiredAt: null,
+    refreshToken: null,
+    refreshTokenExpiredAt: null
+  }
 );
 
 export default combineReducers({
   userProfile,
   permissions,
-  accessToken
+  tokens
 });
 
-export const loginUser = ({ username, password }) => dispatch =>
+export const loginUser = ({ username, password }) => (dispatch, getState) =>
   new Promise((resolve, reject) => {
     const data = {
       username,
       password
     };
-    axios
-      .post('http://localhost:3000/api/login', data)
-      .then(response => {
+    console.log(getState());
+    request({
+      url: '/login',
+      method: 'POST',
+      data,
+      isWithoutToken: true,
+      dispatch,
+      getState
+    })
+      .then(data => {
         dispatch(
           openNotification({ text: 'Вы успешно вошли!', variant: 'success' })
         );
-        localStorage.setItem('access_token', response.data['access_token'])
-        dispatch(setProfileData(response.data));
+        const {
+          accessToken,
+          accessTokenExpiredAt,
+          refreshToken,
+          refreshTokenExpiredAt
+        } = data;
+        localStorage.setItem(
+          'token-data',
+          JSON.stringify({
+            accessToken,
+            accessTokenExpiredAt,
+            refreshToken,
+            refreshTokenExpiredAt
+          })
+        );
+        dispatch(setProfileData(data));
+        dispatch(setTokenData(data));
         resolve(data);
       })
       .catch(error => {
         dispatch(
           openNotification({
-            text: error.response.data.message,
+            text: error.message,
             variant: 'error'
           })
         );
@@ -104,7 +148,7 @@ export const registerUser = ({
   firstname,
   lastname,
   patronicname
-}) => dispatch =>
+}) => (dispatch, getState) =>
   new Promise((resolve, reject) => {
     const data = {
       username,
@@ -113,9 +157,15 @@ export const registerUser = ({
       middleName: patronicname,
       password
     };
-    axios
-      .post('http://localhost:3000/api/registration', data)
-      .then(response => {
+    request({
+      url: '/registration',
+      data,
+      method: 'POST',
+      isWithoutToken: true,
+      dispatch,
+      getState
+    })
+      .then(() => {
         dispatch(
           openNotification({
             text: 'Вы успешно зарегистрированы!',
@@ -127,7 +177,7 @@ export const registerUser = ({
       .catch(error => {
         dispatch(
           openNotification({
-            text: error.response.data.message,
+            text: error.message,
             variant: 'error'
           })
         );
@@ -135,22 +185,31 @@ export const registerUser = ({
       });
   });
 
-export const getUserProfileFromToken = () => dispatch => {
-  const token = localStorage.getItem('access_token')
-  axios.get('http://localhost:3000/api/profile', { headers: { token }})
-  .then(response => {
-    dispatch(setProfileData({ ...response.data, access_token: token }));
-  })
-  .catch(error => {
+export const getUserProfileFromToken = () => (dispatch, getState) => {
+  const tokenData = localStorage.getItem('token-data');
+  if (!tokenData) return;
+  dispatch(setTokenData(JSON.parse(tokenData)));
+  request({ url: '/profile', method: 'GET', dispatch, getState })
+    .then(data => {
+      dispatch(setProfileData(data));
+    })
+    .catch(error => {});
+};
 
-  })
-}
+export const refreshTokenRequest = () => (dispatch, getState) => new Promise((resolve, reject) => {
+  request({ url: '/refresh-token', method: 'POST', isRefresh: true, dispatch, getState })
+    .then(data => {
+      setTokenData(data)
+      resolve(resolve)
+    })
+    .catch(error => reject(error));
+});
 
 export const logout = () => dispatch => {
-  localStorage.removeItem('access_token')
-  dispatch(logoutUser())
+  localStorage.removeItem('token-data');
+  dispatch(logoutUser());
   openNotification({
     text: 'Вы вышли из системы',
     variant: 'info'
-  })
-}
+  });
+};
