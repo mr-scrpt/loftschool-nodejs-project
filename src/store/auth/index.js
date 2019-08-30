@@ -99,7 +99,6 @@ export const loginUser = ({ username, password }) => (dispatch, getState) =>
       username,
       password
     };
-    console.log(getState());
     request({
       url: '/login',
       method: 'POST',

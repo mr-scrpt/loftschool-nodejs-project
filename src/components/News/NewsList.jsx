@@ -1,5 +1,11 @@
-import React from 'react';
-
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import {
+  getNews,
+  isLoadingSelector,
+  isLoadedSelector,
+  newsListSelector
+} from '../../store/news';
 import {
   Typography,
   Card,
@@ -50,42 +56,40 @@ const NewsCard = withStyles(styles)(({ classes, post }) => {
   );
 });
 
-const NewsList = () => {
-  const news = [
-    {
-      id: 1,
-      title: 'Новость 1',
-      text: 'Всем привет! Эта новая новость!',
-      created_at: '2018-06-29T19:00:04.645Z',
-      user: { id: 1, username: 'ascold2019', image: null }
-    },
-    {
-      id: 2,
-      title: 'Новость 2',
-      text: 'Всем привет! Эта новая новость!',
-      created_at: '2018-06-29T19:00:04.645Z',
-      user: { id: 1, username: 'ascold2019', image: null }
-    },
-    {
-      id: 3,
-      title: 'Новость 3',
-      text: 'Всем привет! Эта новая новость!',
-      created_at: '2018-06-29T19:00:04.645Z',
-      user: { id: 1, username: 'ascold2019', image: null }
-    }
-  ];
-  return (
-    <>
-      <ButtonLink color="primary" path="/news/add">
-        Добавить
-      </ButtonLink>
-      <div>
-        {news.map(post => (
-          <NewsCard post={post} key={post.id} />
-        ))}
-      </div>
-    </>
-  );
-};
+class NewsList extends PureComponent {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(getNews());
+  }
+  render() {
+    const { isLoading, isLoaded, news } = this.props;
+    return (
+      <>
+        <ButtonLink color="primary" path="/news/add">
+          Добавить
+        </ButtonLink>
+        <div>
+          {isLoading ? <div>Loading...</div> : null}
+          {isLoaded ? (
+            news.length ? (
+              news.map(post => <NewsCard post={post} key={post.id} />)
+            ) : (
+              <div>Нет новостей</div>
+            )
+          ) : null}
+        </div>
+      </>
+    );
+  }
+}
 
-export default NewsList;
+const mapStateToProps = state => ({
+  isLoading: isLoadingSelector(state),
+  isLoaded: isLoadedSelector(state),
+  news: newsListSelector(state)
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(NewsList);

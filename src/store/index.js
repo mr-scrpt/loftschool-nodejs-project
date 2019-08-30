@@ -2,10 +2,12 @@ import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import auth from './auth';
 import notifications from './notifications';
+import news from './news'
 
 const rootReducer = combineReducers({
   auth,
-  notifications
+  notifications,
+  news
 });
 
 const createAppStore = () => {
