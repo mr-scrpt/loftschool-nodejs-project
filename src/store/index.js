@@ -2,12 +2,14 @@ import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import auth from './auth';
 import notifications from './notifications';
-import news from './news'
+import news from './news';
+import adminPanel from './adminPanel';
 
 const rootReducer = combineReducers({
   auth,
   notifications,
-  news
+  news,
+  adminPanel
 });
 
 const createAppStore = () => {
@@ -15,9 +17,7 @@ const createAppStore = () => {
     rootReducer,
     compose(
       applyMiddleware(thunk),
-      window.__REDUX_DEVTOOLS_EXTENSION__
-        ? window.__REDUX_DEVTOOLS_EXTENSION__()
-        : noop => noop
+      window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : noop => noop
     )
   );
 
