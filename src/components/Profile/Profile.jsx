@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 import {
   Container,
   Typography,
@@ -12,6 +14,7 @@ import {
 import AspectRatio from 'react-aspect-ratio';
 import PasswordInput from '../common/PasswordInput';
 import { withStyles } from '@material-ui/styles';
+import { userProfileSelector, saveProfile, isLoadingUserProfileSelector } from '../../store/auth';
 
 const styles = theme => ({
   wrapper: {
@@ -52,8 +55,86 @@ const styles = theme => ({
 });
 
 class Profile extends PureComponent {
+  state = {
+    firstName: '',
+    middleName: '',
+    surName: '',
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+    image: '',
+    fileRef: React.createRef()
+  };
+
+  componentDidMount() {
+    const { userProfile } = this.props;
+    this.setState({
+      firstName: userProfile.firstName,
+      middleName: userProfile.middleName,
+      surName: userProfile.surName,
+      image: userProfile.image
+    });
+  }
+
+  cancelHandler = () => {
+    const { userProfile } = this.props;
+    this.setState({
+      firstName: userProfile.firstName,
+      middleName: userProfile.middleName,
+      surName: userProfile.surName,
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+      image: userProfile.image
+    });
+  };
+
+  handleChange = event => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
+
+  handleChangeFile = () => {
+    const { fileRef } = this.state;
+
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      this.setState({ image: e.target.result });
+    };
+
+    fileRef.current.files[0] && reader.readAsDataURL(fileRef.current.files[0]);
+  };
+
+  submitHandler = () => {
+    const { dispatch } = this.props;
+    const { firstName, surName, middleName, oldPassword, newPassword, fileRef } = this.state;
+    dispatch(
+      saveProfile({
+        firstName,
+        surName,
+        middleName,
+        oldPassword,
+        newPassword,
+        avatar: fileRef.current.files[0] || null
+      })
+    ).then(() => {
+      this.cancelHandler();
+    });
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, isLoading } = this.props;
+    const {
+      firstName,
+      surName,
+      middleName,
+      oldPassword,
+      newPassword,
+      confirmPassword,
+      image,
+      fileRef
+    } = this.state;
     return (
       <div className={classes.wrapper}>
         <Container>
@@ -63,7 +144,7 @@ class Profile extends PureComponent {
                 <AspectRatio className={classes.avatarPreviewWrapper}>
                   <Avatar
                     className={classes.avatarPreview}
-                    src="/assets/img/no-user-image-big.png"
+                    src={image || '/assets/img/no-user-image-big.png'}
                   ></Avatar>
                 </AspectRatio>
                 <Button
@@ -72,8 +153,13 @@ class Profile extends PureComponent {
                   component="label"
                   color="primary"
                 >
-                  Загрузить файл
-                  <input type="file" style={{ display: 'none' }} />
+                  Выбрать файл
+                  <input
+                    type="file"
+                    style={{ display: 'none' }}
+                    ref={fileRef}
+                    onChange={this.handleChangeFile}
+                  />
                 </Button>
               </Grid>
               <Grid item xs={8}>
@@ -86,16 +172,25 @@ class Profile extends PureComponent {
                       label="Фамилия"
                       className={classes.textField}
                       margin="normal"
+                      name="surName"
+                      value={surName}
+                      onChange={this.handleChange}
                     />
                     <TextField
                       label="Имя"
                       className={classes.textField}
                       margin="normal"
+                      name="firstName"
+                      value={firstName}
+                      onChange={this.handleChange}
                     />
                     <TextField
                       label="Отчество"
                       className={classes.textField}
                       margin="normal"
+                      name="middleName"
+                      value={middleName}
+                      onChange={this.handleChange}
                     />
                   </div>
                   <Typography variant="h4" component="h2" gutterBottom>
@@ -105,27 +200,37 @@ class Profile extends PureComponent {
                     <PasswordInput
                       label="Старый пароль"
                       className={classes.textField}
-                      value=""
-                      handleChange={() => {}}
+                      name="oldPassword"
+                      value={oldPassword}
+                      handleChange={this.handleChange}
                     />
                     <PasswordInput
                       label="Новый пароль"
                       className={classes.textField}
-                      value=""
-                      handleChange={() => {}}
+                      name="newPassword"
+                      value={newPassword}
+                      handleChange={this.handleChange}
                     />
                     <PasswordInput
                       label="Подтверждение пароля"
                       className={classes.textField}
-                      value=""
-                      handleChange={() => {}}
+                      name="confirmPassword"
+                      value={confirmPassword}
+                      handleChange={this.handleChange}
                     />
                   </div>
                   <CardActions className={classes.formActions}>
-                    <Button color="primary" variant="contained">
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      disabled={isLoading}
+                      onClick={this.submitHandler}
+                    >
                       Сохранить
                     </Button>
-                    <Button variant="outlined">Сбросить</Button>
+                    <Button variant="outlined" onClick={this.cancelHandler} disabled={isLoading}>
+                      Сбросить
+                    </Button>
                   </CardActions>
                 </Grid>
               </Grid>
@@ -137,4 +242,12 @@ class Profile extends PureComponent {
   }
 }
 
-export default withStyles(styles)(Profile);
+const mapStateToProps = state => ({
+  userProfile: userProfileSelector(state),
+  isLoading: isLoadingUserProfileSelector(state)
+});
+
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps)
+)(Profile);

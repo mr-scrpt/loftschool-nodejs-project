@@ -17,7 +17,7 @@ const styles = theme => ({
 });
 
 const PasswordInput = withStyles(styles)(
-  ({ id, classes, handleChange, value, label, className }) => {
+  ({ id, classes, handleChange, value, label, className, name }) => {
     const [values, setValues] = React.useState({
       showPassword: false
     });
@@ -39,6 +39,7 @@ const PasswordInput = withStyles(styles)(
           id={id}
           autoComplete={id}
           type={values.showPassword ? 'text' : 'password'}
+          name={name}
           value={value}
           onChange={handleChange}
           startAdornment={
