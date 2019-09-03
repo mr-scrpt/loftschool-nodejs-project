@@ -4,12 +4,14 @@ import auth from './auth';
 import notifications from './notifications';
 import news from './news';
 import adminPanel from './adminPanel';
+import chat from './chat';
 
 const rootReducer = combineReducers({
   auth,
   notifications,
   news,
-  adminPanel
+  adminPanel,
+  chat
 });
 
 const createAppStore = () => {

@@ -58,7 +58,6 @@ const tokens = handleActions(
         refreshToken,
         refreshTokenExpiredAt
       } = action.payload;
-      console.log(accessToken, new Date(accessTokenExpiredAt), refreshToken, refreshTokenExpiredAt)
       return {
         accessToken,
         accessTokenExpiredAt,
