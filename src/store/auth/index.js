@@ -58,6 +58,7 @@ const tokens = handleActions(
         refreshToken,
         refreshTokenExpiredAt
       } = action.payload;
+      console.log(accessToken, new Date(accessTokenExpiredAt), refreshToken, refreshTokenExpiredAt)
       return {
         accessToken,
         accessTokenExpiredAt,
@@ -183,7 +184,7 @@ export const refreshTokenRequest = () => (dispatch, getState) =>
   new Promise((resolve, reject) => {
     request({ url: '/refresh-token', method: 'POST', isRefresh: true, dispatch, getState })
       .then(data => {
-        setTokenData(data);
+        dispatch(setTokenData(data));
         resolve(resolve);
       })
       .catch(error => reject(error));

@@ -7,9 +7,10 @@ import {
   newsListSelector
 } from '../../store/news';
 import ButtonLink from '../common/ButtonLink';
-import NewsListCard from './NewsListCard'
-
-
+import NewsListCard from './NewsListCard';
+import { userPermissionsSelector } from '../../store/auth';
+import _get from 'lodash.get';
+import routes from '../../constants/routes';
 
 class NewsList extends PureComponent {
   componentDidMount() {
@@ -17,12 +18,15 @@ class NewsList extends PureComponent {
     dispatch(getNews());
   }
   render() {
-    const { isLoading, isLoaded, news } = this.props;
+    const { isLoading, isLoaded, news, permission } = this.props;
+    const isCreateAllowed = !!_get(permission, 'news.C', false);
     return (
       <>
-        <ButtonLink color="primary" path="/news/add">
-          Добавить
-        </ButtonLink>
+        {isCreateAllowed && (
+          <ButtonLink color="primary" path={`${routes.news}/add`}>
+            Добавить
+          </ButtonLink>
+        )}
         <div>
           {isLoading ? <div>Loading...</div> : null}
           {isLoaded ? (
@@ -41,7 +45,8 @@ class NewsList extends PureComponent {
 const mapStateToProps = state => ({
   isLoading: isLoadingNewsListSelector(state),
   isLoaded: isLoadedSelector(state),
-  news: newsListSelector(state)
+  news: newsListSelector(state),
+  permission: userPermissionsSelector(state)
 });
 
 export default connect(

@@ -112,13 +112,11 @@ const request = ({
         requestFunc({ url, method, data, headers, resolve, reject });
       }
     } else if (isRefreshExpired && !isWithoutToken) {
-      console.log(2)
       // if refresh is expired - just logout
       dispatch(logout())
       // eslint-disable-next-line
       reject({ detail: 'Refresh token is expired' });
     } else {
-      console.log(3)
       // by default
       requestFunc({ url, method, data, headers, resolve, reject });
     }

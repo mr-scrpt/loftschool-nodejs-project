@@ -43,7 +43,6 @@ export default combineReducers({
 })
 
 export const getNews = () => (dispatch, getState) => {
-  console.log('getNews',isLoadedSelector(getState()))
   if (isLoadedSelector(getState())) return;
   dispatch(setIsLoadingNewsList(true))
   request({ url: '/news', method: 'GET', getState, dispatch })
@@ -54,7 +53,6 @@ export const getNews = () => (dispatch, getState) => {
 
 export const createNews = ({ title, text }) => (dispatch, getState) => new Promise((resolve, reject) => {
   const data = { title, text }
-  console.log('create')
   dispatch(setIsLoadingNewsForm(true))
   request({ url: '/news', method: 'POST', data, getState, dispatch })
     .then(data => {
