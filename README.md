@@ -34,78 +34,78 @@
     - DELETE-запрос на `/api/news/:id` - удаление существующей новости. Необходимо вернуть обновленный список всех новостей из базы данных.
     - Автоматический GET-запрос на `/api/users` - получение списка пользователей. Необходимо вернуть список всех пользоватлей из базы данных.
     - PATCH-запрос на `/api/users/:id/permission` - обновление существующей записи о разрешениях конкретного пользователя. Сигнатура:
-        ```
-        {
-            permission: {
-                chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-                news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-                settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
-            }
-        }
-        ```
-Обьект пользователя:
     ```
     {
-        firstName: String,
-        id: Primary key,
-        image: String,
-        middleName: String,
         permission: {
             chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
             news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
             settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
         }
+    }
+    ```
+> Обьект пользователя:
+```
+{
+    firstName: String,
+    id: Primary key,
+    image: String,
+    middleName: String,
+    permission: {
+        chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
+        news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
+        settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
+    }
+    surName: String,
+    username: String
+}
+```
+> Обьект авторизованного пользователя:
+```
+{
+    firstName: String,
+    id: Primary key,
+    image: String,
+    middleName: String,
+    permission: {
+        chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
+        news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
+        settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
+    }
+    surName: String,
+    username: String,
+
+    accessToken: String,
+        refreshToken: String,
+        accessTokenExpiredAt: Number (ms),
+        refreshTokenExpiredAt: Number (ms)
+}
+```
+Обьект новости:
+```
+{
+    id: Primary key,
+    created_at: Date,
+    text: String,
+    title: String,
+    user: {
+        firstName: String,
+        id: Key,
+        image: String,
+        middleName: String,
         surName: String,
         username: String
     }
-    ```
-Обьект авторизованного пользователя:
-    ```
-    {
-        firstName: String,
-        id: Primary key,
-        image: String,
-        middleName: String,
-        permission: {
-            chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-            news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-            settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
-        }
-        surName: String,
-        username: String,
-
-        accessToken: String,
-            refreshToken: String,
-            accessTokenExpiredAt: Number (ms),
-            refreshTokenExpiredAt: Number (ms)
-    }
-    ```
-Обьект новости:
-    ```
-    {
-        id: Primary key,
-        created_at: Date,
-        text: String,
-        title: String,
-        user: {
-            firstName: String,
-            id: Key,
-            image: String,
-            middleName: String,
-            surName: String,
-            username: String
-        }
-    }
-    ```
-Обьект с токенами:
-    ```
-    {
-        accessToken: String,
-        refreshToken: String,
-        accessTokenExpiredAt: Date (ms),
-        refreshTokenExpiredAt: Date (ms)
-    }
-    ```
+}
+```
+> Обьект с токенами:
+```
+{
+    accessToken: String,
+    refreshToken: String,
+    accessTokenExpiredAt: Date (ms),
+    refreshTokenExpiredAt: Date (ms)
+}
+```
 > (Более подробную информацию о url, дополнительных параметрах и передаваемых данных запроса вы можете получить через средства разработчика при взаимодействии с интерфейсом).
 
 5.  Реализуйте логику взаимодействия frontend и backend частей между собой с помощью socket. Необходимо для реализации чата. У вас далжен быть хеш-объект, в который вы запишите все активные подключения в формате:
