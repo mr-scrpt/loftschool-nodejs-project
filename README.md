@@ -16,14 +16,16 @@
     - POST-запрос на `/api/profile` - авторизация при наличии токена. Необходимо вернуть объект пользователя.
     - PATCH-запрос на `/api/profile` - обновление информации о пользователе.
         Сигнатура запроса:
-        `{
+        ```
+        {
             firstName: String,
             middleName: String,
             surName: String,
             oldPassword: String,
             newPassword: String,
             avatar: File
-        }`
+        }
+        ```
         Необходимо вернуть объект обновленного пользователя.
     - DELETE-запрос на `/api/users/:id` - удаление пользователя.
     - GET-запрос на `/api/news` - получение списка новостей. Необходимо вернуть список всех новостей из базы данных.
@@ -32,15 +34,18 @@
     - DELETE-запрос на `/api/news/:id` - удаление существующей новости. Необходимо вернуть обновленный список всех новостей из базы данных.
     - Автоматический GET-запрос на `/api/users` - получение списка пользователей. Необходимо вернуть список всех пользоватлей из базы данных.
     - PATCH-запрос на `/api/users/:id/permission` - обновление существующей записи о разрешениях конкретного пользователя. Сигнатура:
-        `{
+        ```
+        {
             permission: {
                 chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
                 news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
                 settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
             }
-        }`
+        }
+        ```
 > Обьект пользователя:
-    `{
+    ```
+    {
         firstName: String,
         id: Primary key,
         image: String,
@@ -52,9 +57,11 @@
         }
         surName: String,
         username: String
-    }`
+    }
+    ```
 > Обьект авторизованного пользователя:
-    `{
+    ```
+    {
         firstName: String,
         id: Primary key,
         image: String,
@@ -71,9 +78,11 @@
             refreshToken: String,
             accessTokenExpiredAt: Number (ms),
             refreshTokenExpiredAt: Number (ms)
-    }`
+    }
+    ```
 > Обьект новости:
-    `{
+    ```
+    {
         id: Primary key,
         created_at: Date,
         text: String,
@@ -86,14 +95,17 @@
             surName: String,
             username: String
         }
-    }`
+    }
+    ```
 > Обьект с токенами:
-    `{
+    ```
+    {
         accessToken: String,
         refreshToken: String,
         accessTokenExpiredAt: Date (ms),
         refreshTokenExpiredAt: Date (ms)
-    }`
+    }
+    ```
 > (Более подробную информацию о url, дополнительных параметрах и передаваемых данных запроса вы можете получить через средства разработчика при взаимодействии с интерфейсом).
 
 5.  Реализуйте логику взаимодействия frontend и backend частей между собой с помощью socket. Необходимо для реализации чата. У вас далжен быть хеш-объект, в который вы запишите все активные подключения в формате:
