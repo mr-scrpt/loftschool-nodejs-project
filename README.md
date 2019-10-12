@@ -80,7 +80,7 @@
         refreshTokenExpiredAt: Number (ms)
 }
 ```
-Обьект новости:
+> Обьект новости:
 ```
 {
     id: Primary key,
