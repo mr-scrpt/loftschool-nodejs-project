@@ -94,10 +94,10 @@ const request = ({
 
       // dispatch refresh token (first-time only!)
       if (!isRefresh && !isRefreshDispatched) {
-        
+        isRefreshDispatched = true;
         dispatch(refreshTokenRequest())
           .then(() => {
-            isRefreshDispatched = true;
+            isRefreshDispatched = false;
             // and after refresh - execute requests from waiting stack
             waitQueue.forEach(config => requestFunc(config));
           })
