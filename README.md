@@ -8,7 +8,7 @@
 
 1.  Выберите фреймворк - [Express.js](http://expressjs.com/ru/) или [Koa.js](http://koajs.com/).
 2.  Выберите базу данных - MongoDB (рекомедуемая ORM - [Mongoose](http://mongoosejs.com/)) или PostgreSQL (рекомедуемая ORM - [Sequelize](http://docs.sequelizejs.com/)).
-3.  Подготовьте http-сервер, который на любой get-запрос вернет index.html (маршрутизация выполняется на frontend'e средствами бибилиотеки vue-router).
+3.  Подготовьте http-сервер, который на любой get-запрос вернет index.html (маршрутизация выполняется на frontend'e средствами бибилиотеки react-router).
 4.  Реализуйте логику обработки 12 различных запросов:
     - POST-запрос на `/api/registration` - создание нового пользователя (регистрация). Сигнатура запроса: `{ username, surName, firstName, middleName, password }`. Необходимо вернуть объект авторизовавшегося пользователя.
     - POST-запрос на `/api/login` - авторизация после пользователького ввода. Cигнатура запроса: `{ username, password }` Необходимо вернуть объект авторизовавшегося пользователя.
@@ -76,8 +76,8 @@
 
     accessToken: String,
         refreshToken: String,
-        accessTokenExpiredAt: Number (ms),
-        refreshTokenExpiredAt: Number (ms)
+        accessTokenExpiredAt: Date (ms),
+        refreshTokenExpiredAt: Date (ms)
 }
 ```
 > Обьект новости:
